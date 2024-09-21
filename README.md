@@ -21,6 +21,14 @@ docker-compose up
 docker-compose run --rm app sh -c "python manage.py test"
 ```
 
+### Create a new Django app/service
+```shell
+docker-compose run --rm app sh -c "python manage.py startapp <name_of_app>"
+```
+```shell
+docker-compose run --rm app sh -c "python manage.py startapp core"
+```
+
 ## Docker Hub Naming Convention
 ```shell
 DOCKERHUB_USER
