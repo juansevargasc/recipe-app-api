@@ -1,4 +1,4 @@
-# Django Advanced Project - Recipe API 
+# Django Advanced Project - Recipe API
 
 ## Quick Commands
 ### Flake8
@@ -27,6 +27,11 @@ docker-compose run --rm app sh -c "python manage.py startapp <name_of_app>"
 ```
 ```shell
 docker-compose run --rm app sh -c "python manage.py startapp core"
+```
+
+### Create super user
+```shell
+docker compose run --rm app sh -c "python manage.py createsuperuser"
 ```
 
 ## Docker Hub Naming Convention
