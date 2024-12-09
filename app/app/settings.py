@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken', # It's another app from drf
     'drf_spectacular',
     'user', # Installing app: user
+    'recipe', # Installing app: app
 ]
 
 MIDDLEWARE = [
