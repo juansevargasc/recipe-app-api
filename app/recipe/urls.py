@@ -14,6 +14,7 @@ from recipe import views
 router = DefaultRouter()
 # This will create endpoint "/recipes", it will support CRUD methods
 router.register('recipes', views.RecipeViewSet)
+router.register('tags', views.TagViewSet)
 
 # Name for reverse look up
 app_name = 'recipe'
