@@ -32,10 +32,14 @@ class TagSerializer(serializers.ModelSerializer):
 class RecipeSerializer(serializers.ModelSerializer):
     """Serializer for recipes."""
     tags = TagSerializer(many=True, required=False)  # By default nested serializers are read only  # noqa
+    ingredients = IngredientSerializer(many=True, required=False)
 
     class Meta:
         model = Recipe
-        fields = ['id', 'title', 'time_minutes', 'price', 'link', 'tags']
+        fields = [
+            'id', 'title', 'time_minutes', 'price', 'link', 'tags',
+            'ingredients'
+        ]
         read_only_fields = ['id']
 
     def _get_or_create_tags(self, tags, recipe):
@@ -53,14 +57,27 @@ class RecipeSerializer(serializers.ModelSerializer):
             # Add them to recipe.
             recipe.tags.add(tag_obj)
 
+    def _get_or_create_ingredients(self, ingredients, recipe):
+        """Handle getting or creating ingredients as needed."""
+        auth_user = self.context['request'].user
+
+        for ingredient in ingredients:
+            ingredient_obj, create = Ingredient.objects.get_or_create(
+                user=auth_user,
+                **ingredient  # This allows to include more parameters from the ingredient model, otherwise the ingredient model would need to be specified paramater by parameter.  # noqa
+            )
+            # Add them to recipe.
+            recipe.ingredients.add(ingredient_obj)
 
     def create(self, validated_data):
         """Customizing creating a recipe."""
         tags = validated_data.pop('tags', [])  # pop tags, if they don't exist, then default to empty list [].  # noqa
+        ingredients = validated_data.pop('ingredients', [])
 
         # Creates the recipe without tags in it yet.
         recipe = Recipe.objects.create(**validated_data)
         self._get_or_create_tags(tags, recipe)
+        self._get_or_create_ingredients(ingredients, recipe)
 
         return recipe
 

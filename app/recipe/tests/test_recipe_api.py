@@ -352,3 +352,74 @@ class PrivateRecipeApiTest(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(recipe.tags.count(), 0)
+
+    def test_create_recipe_with_new_ingredients(self):
+        """Tests creating a recipe with new ingredients."""
+
+        # 1. Create a recipe. Payload
+        payload = {
+            'title': 'Cauliflower Tacos',
+            'time_minutes': 60,
+            'price': Decimal('4.30'),
+            'ingredients': [{'name': 'Cauliflower'}, {'name': 'Salt'}]
+        }
+        res = self.client.post(RECIPES_URL, payload, format='json')
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        # 2. Check recipes in db.
+        # Filter recipes by user
+        recipes = Recipe.objects.filter(user=self.user)
+        self.assertEqual(recipes.count(), 1)
+
+        # Bring the only recipe to memory
+        recipe = recipes[0]
+        # Assert ingredients of that recipes is 2
+        self.assertEqual(recipe.ingredients.count(), 2)
+
+        # Assert ingredients of that recipe indeed exists
+        for ingredient in payload['ingredients']:
+            exists = recipe.ingredients.filter(
+                name=ingredient['name'],
+                user=self.user
+            ).exists()
+
+            self.assertTrue(exists)
+
+    def test_create_recipe_with_existing_ingredients(self):
+        """Testing creating a new recipe with an existing ingredient."""
+        # Create the ingredient
+        ingredient = Ingredient.objects.create(user=self.user, name='Lemon')
+
+        # Create the recipe
+        payload = {
+            'title': 'Vietnamese Soup',
+            'time_minutes': 25,
+            'price': '2.55', # Both decimal('2.55') and '2.55' should be interpreted ocrrectly  # noqa
+            'ingredients': [{'name': 'Lemon'}, {'name': 'Fish Sauce'}]
+        }
+        res = self.client.post(RECIPES_URL, payload, format='json')
+        self.assertEqual(res.status_code, status.HTTP_201_CREATED)
+
+        # Bring the recipe to memory
+        recipes = Recipe.objects.filter(user=self.user)
+        self.assertEqual(recipes.count(), 1)
+
+        # Make sure the number of ingredients is 2 for that recipe  # noqa
+        recipe = recipes[0]
+        self.assertEqual(recipe.ingredients.count(), 2)
+
+        # Make sure the already created ingredient Lemon is in the recipe, so it didn't create a new ingredient.  # noqa
+        self.assertIn(ingredient, recipe.ingredients.all())
+
+        for ingredient in payload['ingredients']:
+            exists = recipe.ingredients.filter(
+                name=ingredient['name'],
+                user=self.user
+            ).exists()
+
+            self.assertTrue(exists)
+
+    def test_create_ingredient_on_update(self):
+        """Test creating an ingredient wehn updating a recipe."""
+        recipe = create_recipe(user=self.user)
+
