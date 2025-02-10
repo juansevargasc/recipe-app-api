@@ -96,7 +96,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             instance.ingredients.clear()
             self._get_or_create_ingredients(ingredients, instance)
 
-        # Will update if vaidated data includes any changes
+        # Will update if validated data includes any changes (any updates)  # noqa
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
 
