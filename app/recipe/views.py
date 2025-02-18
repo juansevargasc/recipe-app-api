@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from core.models import Recipe, Tag, Ingredient
 from recipe import serializers
+# from rest_framework.parsers import MultiPartParser
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
@@ -30,6 +31,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     authentication_classes = [TokenAuthentication]
     # This means you need to be authenticated.
     permission_classes = [IsAuthenticated]
+
+    # parser_classes = [MultiPartParser]
 
     def get_queryset(self):
         """
@@ -64,12 +67,17 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(methods=['POST'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
-        """Upload an image to recipe."""
+        """
+            Upload an image to recipe.
+            Detail means it is a specific id of a recipe.
+            The non-detail view would be a list of recipes.
+
+        """
         recipe = self.get_object()
         serializer = self.get_serializer(recipe, data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
+            serializer.save()  # Safe to db.
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
