@@ -66,7 +66,9 @@ class PrivateTagsApiTests(TestCase):
         Tag.objects.create(user=user2, name="Fruity")
         tag = Tag.objects.create(user=self.user, name="Comfort Food")
 
-        # Testign that /tags/ endpoint lists only tags for authenticated users.  noqa
+        # Testing that /tags/
+        # endpoint lists only
+        # tags for authenticated users.
         res = self.client.get(TAGS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -99,5 +101,5 @@ class PrivateTagsApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
         tags = Tag.objects.filter(user=self.user)
-        # Since the user only created 1 tag and then we delete it, there shouldn't be any.
+        # Since the user only created 1 tag and then we delete it, there shouldn't be any.  # noqa
         self.assertFalse(tags.exists())

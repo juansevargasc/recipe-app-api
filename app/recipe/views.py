@@ -5,7 +5,7 @@ from rest_framework import (
     viewsets,
     mixins,
     status,
-) # Additional funct. to a view  # noqa
+)  # Additional funct. to a view  # noqa
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
@@ -13,6 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from core.models import Recipe, Tag, Ingredient
 from recipe import serializers
+
 # from rest_framework.parsers import MultiPartParser
 
 
@@ -45,12 +46,15 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         Return the serializer class for request.
         It will depend if the action is list.
-        We are customizing the serializer for the following Default Router config:
-        endpoint: recipes/	type: GET	self.action: list	Action: List all recipes
+        We are customizing the serializer
+        for the following Default Router config:
+        endpoint:
+        recipes/	type: GET	self.action: list
+        Action: List all recipes
         """
-        if self.action == 'list':
+        if self.action == "list":
             return serializers.RecipeSerializer
-        elif self.action == 'upload_image':
+        elif self.action == "upload_image":
             return serializers.RecipeImageSerializer
 
         return self.serializer_class
@@ -65,12 +69,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """
         serializer.save(user=self.request.user)
 
-    @action(methods=['POST'], detail=True, url_path='upload-image')
+    @action(methods=["POST"], detail=True, url_path="upload-image")
     def upload_image(self, request, pk=None):
         """
-            Upload an image to recipe.
-            Detail means it is a specific id of a recipe.
-            The non-detail view would be a list of recipes.
+        Upload an image to recipe.
+        Detail means it is a specific id of a recipe.
+        The non-detail view would be a list of recipes.
 
         """
         recipe = self.get_object()

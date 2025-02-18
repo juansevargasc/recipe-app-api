@@ -2,12 +2,16 @@
 Tests for models.
 
 Patching the Correct Target:
-It's crucial to patch the uuid4 function in the exact location where it's used.
-If recipe_image_file_path imports uuid4 directly (e.g., from uuid import uuid4),
+It's crucial to patch the uuid4 function
+in the exact location where it's used.
+If recipe_image_file_path imports uuid4
+directly (e.g., from uuid import uuid4),
 you should patch 'core.models.uuid4'.
 
-If it uses uuid.uuid4, then patch 'core.models.uuid.uuid4'.
-This ensures that the function uses the mocked version during testing.
+If it uses uuid.uuid4, then patch
+'core.models.uuid.uuid4'.
+This ensures that the function uses
+the mocked version during testing.
 
 """
 from unittest.mock import patch
@@ -31,7 +35,10 @@ class ModelTests(TestCase):
         """Test creating a user with an email successful."""
         email = "test@example.com"
         password = "testpass123"
-        user = get_user_model().objects.create_user(email=email, password=password)
+        user = get_user_model().objects.create_user(
+            email=email,
+            password=password
+        )
 
         # Asserts
         self.assertEqual(user.email, email)
@@ -58,14 +65,20 @@ class ModelTests(TestCase):
 
     def test_create_superuser(self):
         """Test creating a superuser."""
-        user = get_user_model().objects.create_superuser("test@example.com", "test123")
+        user = get_user_model().objects.create_superuser(
+            "test@example.com",
+            "test123"
+        )
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
 
     def test_create_recipe(self):
         """Test creating a recipe is successful."""
-        user = get_user_model().objects.create_user("test@example.com", "testpass123")
+        user = get_user_model().objects.create_user(
+            "test@example.com",
+            "testpass123"
+        )
         recipe = models.Recipe.objects.create(
             user=user,
             title="Sample Recipe Name",

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-yv^^%=^5tu))&ngdn2956w#qe^9uoap_om8u^zjv6l)pk5hsn9"
+SECRET_KEY = "django-insecure-yv^^%=^5tu))&ngdn2956w#qe^9uoap_om8u^zjv6l)pk5hsn9"  # noqa
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -84,7 +84,7 @@ WSGI_APPLICATION = "app.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",  # Name of postgres engine for Django.
+        "ENGINE": "django.db.backends.postgresql",  # Name of postgres engine for Django.  # noqa
         "HOST": os.environ.get("DB_HOST"),
         "NAME": os.environ.get("DB_NAME"),
         "USER": os.environ.get("DB_USER"),
@@ -147,5 +147,5 @@ REST_FRAMEWORK = {"DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema"}
 
 # Allows to use spectacular to upload the image.
 SPECTACULAR_SETTINGS = {
-    'COMPONENT_SPLIT_REQUEST': True,
+    "COMPONENT_SPLIT_REQUEST": True,
 }

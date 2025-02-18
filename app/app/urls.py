@@ -37,7 +37,7 @@ urlpatterns = [
 ]
 
 """
-    This allows the django development server to have the static allowance behavior that a reverse proxy would have.
+    This allows the django development server to have the static allowance behavior that a reverse proxy would have.  # noqa
     This is only for debug or dev mode.
 """
 if settings.DEBUG:

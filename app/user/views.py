@@ -18,7 +18,7 @@ class CreateUserView(generics.CreateAPIView):
 class CreateTokenView(ObtainAuthToken):
     """
     Create a new auth token for user.
-    By default 'ObtainAuthToken' from drf uses default user (username, password) model.
+    By default 'ObtainAuthToken' from drf uses default user (username, password) model.  # noqa
     So we specify a serilizer 'AuthTokenSerializer'
     Renderer Classes is optional, sets to default so it can use the UI from drf
     """
